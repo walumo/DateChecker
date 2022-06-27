@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace DateChecker
+namespace Utility
 {
-    public class Checker
+    public class DateChecker
     {
         public static bool IsInFuture(DateTime date)
         {
@@ -19,5 +21,20 @@ namespace DateChecker
             else
                 return false;
         }
+    }
+
+    public class Query
+    {
+        public static IQueryable Search(string input)
+        {
+            if (String.IsNullOrWhiteSpace(input))
+                return null;
+            else if (!String.IsNullOrWhiteSpace(input) && int.TryParse(input, out int result))
+                return SearchTopic(result);
+            else
+                return SearchTopic(input);
+        }
+
+
     }
 }
