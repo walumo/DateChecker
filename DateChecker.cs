@@ -35,6 +35,13 @@ namespace Utility
                 return SearchTopic(input);
         }
 
-
+        public static IQueryable SearchTopic(int input)
+        {
+            return null;
+        }
+        public static IQueryable SearchTopic(string input)
+        {
+            return null;
+        }
     }
 }
