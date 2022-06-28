@@ -26,23 +26,23 @@ namespace Utility
     
     public class Query
     {
-        public static List<dynamic> Search(string input)
+        public static List<dynamic> Search(string input, List<dynamic> list)
         {
             if (String.IsNullOrWhiteSpace(input))
                 return null;
             else if (!String.IsNullOrWhiteSpace(input) && int.TryParse(input, out int result))
-                return null; //SearchTopic(result);
+                return SearchTopic(result, list);
             else
-                return SearchTopic(input);
+                return SearchTopic(input, list);
         }
         
         public static List<dynamic> SearchTopic(int input, List<dynamic> list)
         {
             return list.Where(topic => topic.Id == input).ToList();
         }
-        public static List<dynamic> SearchTopic(string input)
+        public static List<dynamic> SearchTopic(string input, List<dynamic> list)
         {
-            return null;
+            return list.Where(topic => Regex.IsMatch(topic.Title, input, RegexOptions.IgnoreCase)).ToList();
         }
     }
 }
