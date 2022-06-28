@@ -31,20 +31,29 @@ namespace Utility
             if (String.IsNullOrWhiteSpace(input))
                 return null;
             else if (!String.IsNullOrWhiteSpace(input) && int.TryParse(input, out int result))
-                return null; //SearchTopic(result, list);
+                return SearchTopic(result, list);
             else
                 return SearchTopic(input, list);
         }
-        
-        //public static List<T> SearchTopic<T>(int input, List<T> list)
-        //{
-        //    return list.Where(topic => topic.Id == input).ToList();
-        //}
-        public static List<T> SearchTopic<T>(string input, List<T> list)
+
+        public static List<T> SearchTopic<T>(int input, List<T> list)
         {
             List<T> results = new List<T>();
 
-            //return list.Select(topic => topic.GetType().GetProperty("Title")).First().GetValue().ToString();
+            for (int i = 0; i < list.Count; i++)
+            {
+                var kokeilu = list.Select(topic => topic.GetType().GetProperty("Id")).First().GetValue(list[i]).ToString();
+
+                if (input == Convert.ToInt32(kokeilu))
+                {
+                    results.Add(list[i]);
+                }
+            }
+            return results;
+        }
+        public static List<T> SearchTopic<T>(string input, List<T> list)
+        {
+            List<T> results = new List<T>();
 
             for (int i = 0; i < list.Count; i++)
             {
