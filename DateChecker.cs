@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Utility
 {
@@ -22,24 +23,24 @@ namespace Utility
                 return false;
         }
     }
-
+    
     public class Query
     {
-        public static IQueryable Search(string input)
+        public static List<dynamic> Search(string input)
         {
             if (String.IsNullOrWhiteSpace(input))
                 return null;
             else if (!String.IsNullOrWhiteSpace(input) && int.TryParse(input, out int result))
-                return SearchTopic(result);
+                return null; //SearchTopic(result);
             else
                 return SearchTopic(input);
         }
-
-        public static IQueryable SearchTopic(int input)
+        
+        public static List<dynamic> SearchTopic(int input, List<dynamic> list)
         {
-            return null;
+            return list.Where(topic => topic.Id == input).ToList();
         }
-        public static IQueryable SearchTopic(string input)
+        public static List<dynamic> SearchTopic(string input)
         {
             return null;
         }
