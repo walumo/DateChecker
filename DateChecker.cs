@@ -26,7 +26,7 @@ namespace Utility
     
     public class Query
     {
-        public static List<dynamic> Search(string input, List<dynamic> list)
+        public static List<T> Search<T>(string input, List<T> list)
         {
             if (String.IsNullOrWhiteSpace(input))
                 return null;
@@ -35,14 +35,36 @@ namespace Utility
             else
                 return SearchTopic(input, list);
         }
-        
-        public static List<dynamic> SearchTopic(int input, List<dynamic> list)
+
+        public static List<T> SearchTopic<T>(int input, List<T> list)
         {
-            return list.Where(topic => topic.Id == input).ToList();
+            List<T> results = new List<T>();
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                var kokeilu = list.Select(topic => topic.GetType().GetProperty("Id")).First().GetValue(list[i]).ToString();
+
+                if (input == Convert.ToInt32(kokeilu))
+                {
+                    results.Add(list[i]);
+                }
+            }
+            return results;
         }
-        public static List<dynamic> SearchTopic(string input, List<dynamic> list)
+        public static List<T> SearchTopic<T>(string input, List<T> list)
         {
-            return list.Where(topic => Regex.IsMatch(topic.Title, input, RegexOptions.IgnoreCase)).ToList();
+            List<T> results = new List<T>();
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                var kokeilu = list.Select(topic => topic.GetType().GetProperty("Title")).First().GetValue(list[i]).ToString();
+
+                if (Regex.IsMatch(kokeilu, input, RegexOptions.IgnoreCase))
+                {
+                    results.Add(list[i]);
+                }
+            }
+            return results;
         }
     }
 }
