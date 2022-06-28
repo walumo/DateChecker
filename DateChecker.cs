@@ -26,23 +26,36 @@ namespace Utility
     
     public class Query
     {
-        public static List<dynamic> Search(string input, List<dynamic> list)
+        public static List<T> Search<T>(string input, List<T> list)
         {
             if (String.IsNullOrWhiteSpace(input))
                 return null;
             else if (!String.IsNullOrWhiteSpace(input) && int.TryParse(input, out int result))
-                return SearchTopic(result, list);
+                return null; //SearchTopic(result, list);
             else
                 return SearchTopic(input, list);
         }
         
-        public static List<dynamic> SearchTopic(int input, List<dynamic> list)
+        //public static List<T> SearchTopic<T>(int input, List<T> list)
+        //{
+        //    return list.Where(topic => topic.Id == input).ToList();
+        //}
+        public static List<T> SearchTopic<T>(string input, List<T> list)
         {
-            return list.Where(topic => topic.Id == input).ToList();
-        }
-        public static List<dynamic> SearchTopic(string input, List<dynamic> list)
-        {
-            return list.Where(topic => Regex.IsMatch(topic.Title, input, RegexOptions.IgnoreCase)).ToList();
+            List<T> results = new List<T>();
+
+            //return list.Select(topic => topic.GetType().GetProperty("Title")).First().GetValue().ToString();
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                var kokeilu = list.Select(topic => topic.GetType().GetProperty("Title")).First().GetValue(list[i]).ToString();
+
+                if (Regex.IsMatch(kokeilu, input, RegexOptions.IgnoreCase))
+                {
+                    results.Add(list[i]);
+                }
+            }
+            return results;
         }
     }
 }
